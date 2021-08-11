@@ -25,7 +25,7 @@ module.exports = [
   },
   {
     id:5,
-    name: 'Flim-flom',
+    name: 'Nimbix',
     bad: true,
     species: 'martian',
   },
