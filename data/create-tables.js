@@ -21,7 +21,7 @@ async function run() {
                     id SERIAL PRIMARY KEY NOT NULL,
                     name VARCHAR(512) NOT NULL,
                     bad BOOL NOT NULL,
-                    species INTEGER NOT NULL
+                    species VARCHAR(512) NOT NULL
             );
         `);
 
