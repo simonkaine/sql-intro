@@ -64,6 +64,24 @@ describe('app routes', () => {
 
     });
 
+    test('POST /characters/:id create new character into array.', async ()=>{
+      const newCharacterInArray = {
+        id:6,
+        name: 'JOY',
+        bad: false,
+        species: 'Pokemon'
+      };
+      const data = await fakeRequest(app)
+        .put('/characters/1')
+        .send(newCharacterInArray)
+        .expect(200)
+        .expect('Content-Type', /json/);
+      expect(data.body.species).toEqual(newCharacterInArray.species);
+      expect(data.body.id).toBeGreaterThan(0);
+    });
+
+
+
     // test('returns characters', async() => {
 
     //   const expectation = [
