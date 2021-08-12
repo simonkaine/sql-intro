@@ -5,7 +5,7 @@ const { execSync } = require('child_process');
 const fakeRequest = require('supertest');
 const app = require('../lib/app');
 const client = require('../lib/client');
-const characterData = require('../data/myData');
+// const characterData = require('../data/myData');
 
 describe('app routes', () => {
   describe('routes', () => {
@@ -48,7 +48,21 @@ describe('app routes', () => {
 
     });
 
-    
+    test('PUT /characters/:id updates characters', async ()=>{
+      const characterUPDATEdata =   {
+        id: 1,
+        name:'Simon Kaine',
+        bad: false,
+        species: 'martian'
+      };
+      const data = await fakeRequest(app)
+        .put('/characters/1')
+        .send(characterUPDATEdata)
+        .expect(200)
+        .expect('Content-Type', /json/);
+      expect(data.body.species).toEqual(characterUPDATEdata.species);
+
+    });
 
     // test('returns characters', async() => {
 
