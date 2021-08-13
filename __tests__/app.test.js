@@ -69,7 +69,7 @@ describe('app routes', () => {
         id:6,
         name: 'JOY',
         bad: false,
-        species: 'Pokemon'
+        species: 'Pokemon' 
       };
       const data = await fakeRequest(app)
         .put('/characters/1')
@@ -80,7 +80,24 @@ describe('app routes', () => {
       expect(data.body.id).toBeGreaterThan(0);
     });
 
+    test('DELETE /deletes one object in the array by query id', async () => {
+      const deletedObject = {
+        name: 'JOY',
+        bad: false,
+        species: 'Pokemon'
+      };
+      await fakeRequest(app)
+        .post('/characters')
+        .send(deletedObject)
+        .expect('Content-Type', /json/);
+      const data = await fakeRequest(app)
+        .delete('/characters/6')
+        .expect(200)
+        .expect('Content-Type', /json/);
 
+      expect(data.body).toEqual({ ...deletedObject, id: 6 });
+
+    });
 
     // test('returns characters', async() => {
 
