@@ -16,12 +16,16 @@ async function run() {
                     id SERIAL PRIMARY KEY,
                     email VARCHAR(256) NOT NULL,
                     hash VARCHAR(512) NOT NULL
-                );           
+                );
+                CREATE TABLE breeds (
+                  id SERIAL PRIMARY KEY,
+                  name VARCHAR(512) UNIQUE NOT NULL
+              );            
                 CREATE TABLE characters (
                     id SERIAL PRIMARY KEY NOT NULL,
                     name VARCHAR(512) NOT NULL,
                     bad BOOL NOT NULL,
-                    species VARCHAR(512) NOT NULL
+                    species_id INTEGER NOT NULL REFERENCES breeds(id)
             );
         `);
 
@@ -37,3 +41,4 @@ async function run() {
   }
 
 }
+// species VARCHAR(512) NOT NULL
