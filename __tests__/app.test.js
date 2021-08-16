@@ -5,7 +5,7 @@ const { execSync } = require('child_process');
 const fakeRequest = require('supertest');
 const app = require('../lib/app');
 const client = require('../lib/client');
-// const characterData = require('../data/myData');
+const characterData = require('../data/myData');
 
 describe('app routes', () => {
   describe('routes', () => {
@@ -27,6 +27,44 @@ describe('app routes', () => {
   
     afterAll(done => {
       return client.end(done);
+    });
+
+    test.only('GET /characters returns list of characters', async() => {
+
+      const expectation = characterData.map(character => character.name);
+      const expectedData = {
+        id: 1,
+        name: 'Simon Kaine',
+        bad: false,
+        species_id: 1
+      };
+
+      const data = await fakeRequest(app)
+        .get('/characters')
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      const name = data.body.map(character => character.name);
+
+      expect(name).toEqual(expectation);
+      expect(name.length).toBe(characterData.length);
+      expect(data.body[0]).toEqual(expectedData);
+    }, 10000);
+
+    test('GET /characters/:id returns the individual character', async ()=>{
+      const expectation = {
+        id: 1,
+        name: 'Simon Kaine',
+        bad: false,
+        species: 'human'
+      };
+      
+      const data = await fakeRequest(app)
+        .get('/characters/1')
+        .expect('Content-Type', /json/)
+        .expect(200);
+      
+      expect(data.body).toEqual(expectation);
     });
 
     test('POST /characters creates a new character', async ()=>{
