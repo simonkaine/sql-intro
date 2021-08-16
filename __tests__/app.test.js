@@ -29,7 +29,7 @@ describe('app routes', () => {
       return client.end(done);
     });
 
-    test.only('GET /characters returns list of characters', async() => {
+    test('GET /characters returns list of characters', async() => {
 
       const expectation = characterData.map(character => character.name);
       const expectedData = {
@@ -56,13 +56,14 @@ describe('app routes', () => {
         id: 1,
         name: 'Simon Kaine',
         bad: false,
-        species: 'human'
+        species_id: 1
       };
       
       const data = await fakeRequest(app)
         .get('/characters/1')
         .expect('Content-Type', /json/)
         .expect(200);
+
       
       expect(data.body).toEqual(expectation);
     });
