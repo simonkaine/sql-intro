@@ -6,7 +6,7 @@ const fakeRequest = require('supertest');
 const app = require('../lib/app');
 const client = require('../lib/client');
 const characterData = require('../data/myData');
-const breedsData = require('../data/breeds')
+const breedsData = require('../data/breeds');
 
 describe('app routes', () => {
   describe('routes', () => {
@@ -82,7 +82,7 @@ describe('app routes', () => {
       expect(speciesNames.length).toBe(speciesNames.length);
       expect(data.body[0].id).toBeGreaterThan(0);
     });
-    
+
     test('POST /characters creates a new character', async ()=>{
 
       const newCharacter = {
