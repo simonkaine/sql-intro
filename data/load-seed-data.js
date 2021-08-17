@@ -3,6 +3,7 @@ const client = require('../lib/client');
 const data = require('./myData.js');
 // const usersData = require('./users');
 const { getEmoji } = require('../lib/emoji.js');
+const breedsData = require('./breeds.js');
 
 run();
 
@@ -11,26 +12,24 @@ async function run() {
   try {
     await client.connect();
 
-    // const users = await Promise.all(
-    //   usersData.map(user => {
-    //     return client.query(`
-    //                   INSERT INTO users (email, hash)
-    //                   VALUES ($1, $2)
-    //                   RETURNING *;
-    //               `,
-    //     [user.email, user.hash]);
-    //   })
-    // );
-
-    // const user = users[0].rows[0];
+    await Promise.all(
+      breedsData.map(breed => {
+        return client.query(`
+                      INSERT INTO breeds (name)
+                      VALUES ($1)
+                      RETURNING *;
+                  `,
+        [breed.name]);
+      })
+    );
 
     await Promise.all(
       data.map(character => {
         return client.query(`
-                    INSERT INTO characters (name, bad, species)
+                    INSERT INTO characters (name, bad, species_id)
                     VALUES ($1, $2, $3);
                 `,
-        [character.name, character.bad, character.species]);
+        [character.name, character.bad, character.species_id]);
       })
     );
     
