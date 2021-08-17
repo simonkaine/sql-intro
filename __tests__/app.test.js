@@ -37,7 +37,8 @@ describe('app routes', () => {
         id: 1,
         name: 'Simon Kaine',
         bad: false,
-        species_id: 1
+        species_id: 1,
+        species: 'human'
       };
 
       const data = await fakeRequest(app)
@@ -57,7 +58,8 @@ describe('app routes', () => {
         id: 1,
         name: 'Simon Kaine',
         bad: false,
-        species_id: 1
+        species_id: 1,
+        species: 'human'
       };
       
       const data = await fakeRequest(app)
