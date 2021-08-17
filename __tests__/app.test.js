@@ -6,6 +6,7 @@ const fakeRequest = require('supertest');
 const app = require('../lib/app');
 const client = require('../lib/client');
 const characterData = require('../data/myData');
+const breedsData = require('../data/breeds')
 
 describe('app routes', () => {
   describe('routes', () => {
@@ -68,38 +69,37 @@ describe('app routes', () => {
       expect(data.body).toEqual(expectation);
     });
 
+    test('GET /breeds returns list of breeds', async() => {
+      const expected = breedsData.map(breed => breed.name);
+      const data = await fakeRequest(app)
+        .get('/breeds')
+        .expect('Content-Type', /json/)
+        .expect(200);
+        
+      const speciesNames = data.body.map(breed => breed.name);
+        
+      expect(speciesNames).toEqual(expected);
+      expect(speciesNames.length).toBe(speciesNames.length);
+      expect(data.body[0].id).toBeGreaterThan(0);
+    });
+    
     test('POST /characters creates a new character', async ()=>{
 
       const newCharacter = {
         id:6,
         name: 'JOY',
         bad: false,
-        species: 'Pokemon'
+        species_id: 3
       };
 
       const data = await fakeRequest(app)
         .post('/characters')
         .send(newCharacter)
         .expect(200)
+        // console.log(data.body)
         .expect('Content-Type', /json/);
       expect(data.body.name).toEqual(newCharacter.name);
       expect(data.body.id).toBeGreaterThan(0);
-
-    });
-
-    test('PUT /characters/:id updates characters', async ()=>{
-      const characterUPDATEdata =   {
-        id: 1,
-        name:'Simon Kaine',
-        bad: false,
-        species: 'martian'
-      };
-      const data = await fakeRequest(app)
-        .put('/characters/1')
-        .send(characterUPDATEdata)
-        .expect(200)
-        .expect('Content-Type', /json/);
-      expect(data.body.species).toEqual(characterUPDATEdata.species);
 
     });
 
@@ -108,7 +108,7 @@ describe('app routes', () => {
         id:6,
         name: 'JOY',
         bad: false,
-        species: 'Pokemon' 
+        species_id: 3 
       };
       const data = await fakeRequest(app)
         .put('/characters/1')
@@ -119,11 +119,27 @@ describe('app routes', () => {
       expect(data.body.id).toBeGreaterThan(0);
     });
 
+    test('PUT /characters/:id updates characters', async ()=>{
+      const characterUPDATEdata =   {
+        id: 1,
+        name:'Simon Kaine',
+        bad: false,
+        species_id: 3
+      };
+      const data = await fakeRequest(app)
+        .put('/characters/1')
+        .send(characterUPDATEdata)
+        .expect(200)
+        .expect('Content-Type', /json/);
+      expect(data.body.species).toEqual(characterUPDATEdata.species);
+
+    });
+
     test('DELETE /deletes one object in the array by query id', async () => {
       const deletedObject = {
         name: 'JOY',
         bad: false,
-        species: 'Pokemon'
+        species_id: 3
       };
       await fakeRequest(app)
         .post('/characters')
